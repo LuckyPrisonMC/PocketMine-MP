@@ -6,4 +6,5 @@ Glorius-MP is fully compatible with **PocketMine-MP API 5.0.0** plugins, as no A
 
 ## Coming Soon
 
-- [ ] Support for PocketMine-MP API 4.0.0 plugins
+- [ ] Support for Minecraft 1.21+ version
+- [ ] Vanilla Mob 
