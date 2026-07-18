@@ -1,7 +1,5 @@
 name: Build PocketMine-MP.phar
 
-# Jalan otomatis tiap kali push ke branch mana pun, dan juga bisa dipicu manual
-# lewat tab "Actions" di GitHub (tombol "Run workflow").
 on:
   push:
   workflow_dispatch:
@@ -14,18 +12,14 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      # Action RESMI dari pmmp sendiri, menyiapkan PHP binary khusus dengan
-      # semua extension yang dibutuhkan PocketMine-MP (chunkutils2, pmmpthread,
-      # leveldb, morton, dll). PHP generik/bawaan runner TIDAK cukup.
-      - name: Setup pmmp PHP binary
-        uses: pmmp/setup-php-action@3.0.0
-        with:
-          php-version: "8.2"
-          install-path: "./bin"
+      - name: Download pmmp PHP binary
+        run: |
+          curl --location --fail --progress-bar \
+            "https://github.com/pmmp/PHP-Binaries/releases/download/pm5-latest/PHP-8.2-Linux-x86_64-PM5.tar.gz" \
+            -o php-pm5.tar.gz
+          tar -xzf php-pm5.tar.gz
+          ./bin/php7/bin/php --version
 
-      # Sesuai BUILDING.md resmi pmmp: jalankan composer PAKAI php binary
-      # custom di atas, supaya langkah "make-server" (install dependency +
-      # build phar) konsisten pakai PHP yang sama dari awal sampai akhir.
       - name: Build via composer make-server
         run: ./bin/php7/bin/php "$(which composer)" make-server
 
